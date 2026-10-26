@@ -138,6 +138,28 @@ Bot.adapter.push(
       )
     }
 
+    /** 群临时会话：带 group_id，非好友也能收到（好友时协议端按普通私聊发送） */
+    sendMemberMsg(data, msg) {
+      return this.sendMsg(
+        msg,
+        message => {
+          Bot.makeLog(
+            "info",
+            `发送群临时消息：${this.makeLog(message)}`,
+            `${data.self_id} => ${data.group_id}, ${data.user_id}`,
+            true,
+          )
+          return data.bot.sendApi("send_private_msg", {
+            user_id: data.user_id,
+            group_id: data.group_id,
+            message,
+          })
+        },
+        msg => this.sendFriendForwardMsg(data, msg),
+        (file, name) => this.sendFriendFile(data, file, name),
+      )
+    }
+
     sendGroupMsg(data, msg) {
       return this.sendMsg(
         msg,
@@ -870,6 +892,7 @@ Bot.adapter.push(
       return {
         ...this.pickFriend(i, user_id),
         ...i,
+        sendMsg: this.sendMemberMsg.bind(this, i),
         getInfo: this.getMemberInfo.bind(this, i),
         getAvatarUrl() {
           return this.avatar || `https://q.qlogo.cn/g?b=qq&s=0&nk=${user_id}`
