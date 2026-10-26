@@ -19,11 +19,12 @@ disableMsg: "私聊功能已禁用，仅支持发送cookie，抽卡记录链接�
 disableAdopt:
   - stoken
 
-#白名单群
+#白名单群，支持 群号（所有Bot）或 Bot:群号（仅该Bot）
+#某个Bot存在适用条目时，该Bot只响应名单内的群
 whiteGroup:
 #白名单用户
 whiteUser:
-#黑名单群
+#黑名单群，支持 群号（所有Bot）或 Bot:群号（仅该Bot）
 blackGroup:
   - 213938015
 #黑名单用户
